@@ -1,0 +1,33 @@
+version: "3"
+services:
+  prisma:
+    network_mode: "host"
+    image: prismagraphql/prisma:1.26
+    restart: always
+    ports:
+      - "4466:4466"
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            host: localhost # as we allowed that container can be connected to host, we can use localhost
+            user: dpranjic
+            password: dpranjic
+            rawAccess: true
+            port: 5432
+            migrations: true
+            ssl: true
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:

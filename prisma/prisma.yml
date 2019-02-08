@@ -1,0 +1,17 @@
+endpoint: http://localhost:4466/test/test
+datamodel: datamodel.prisma
+# secret: abudabi
+
+seed:
+  import: seed.graphql
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/
+  - generator: graphql-schema
+    output: ./generated/graphql-schema
+hooks:
+  post-deploy:
+    # - prisma introspect
+    - prisma generate
+    # - prisma seed
